@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     private InputAction climb;
 
     private Rigidbody2D playerRigidBody;
-    private CapsuleCollider2D playerCollider;
+    private BoxCollider2D playerFeet;
     private Animator anim;
     private float playerGravityScale;
     private const string ANIM_IS_CLIMBING = "isClimbing";
@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
         Vector2 climbVelocity = new Vector2(playerRigidBody.velocity.x, dir * climbSpeed);
         playerRigidBody.velocity = climbVelocity;
 
-        if (playerCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) return;
+        if (playerFeet.IsTouchingLayers(LayerMask.GetMask("Ground"))) return;
 
         anim.SetBool(ANIM_IS_CLIMBING, true);
         anim.speed = Mathf.Clamp(Mathf.Abs(playerRigidBody.velocity.y), 0, 1.5f);
@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext obj)
     {
-        if (!playerCollider.IsTouchingLayers(LayerMask.GetMask("Ground"))) return;
+        if (!playerFeet.IsTouchingLayers(LayerMask.GetMask("Ground"))) return;
 
         Vector2 currentVelocity = playerRigidBody.velocity;
         playerRigidBody.velocity += new Vector2(0.0f, jumpForce);
@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
         SetupInput();
         playerRigidBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        playerCollider = GetComponent<CapsuleCollider2D>();
+        playerFeet = GetComponent<BoxCollider2D>();
         playerGravityScale = playerRigidBody.gravityScale;
     }
 }
