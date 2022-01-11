@@ -28,17 +28,6 @@ public class PlayerClimbState : BaseState
         playerMachine.PlayerNearClimbArea += OnPlayerNearClimbArea;
     }
 
-    private void OnPlayerNearClimbArea(bool canClimb){
-        if(!canClimb){
-            ChangeToIdleState();
-        }
-    }
-
-    private void ChangeToIdleState(){
-        previousState = this;
-        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Idle];
-        playerMachine.ChangeState(nextState);
-    }
 
     public override void Start()
     {
@@ -73,5 +62,16 @@ public class PlayerClimbState : BaseState
         playerRigidBody.gravityScale = playerMachine.defaultGravityScale;
     }
 
+    private void OnPlayerNearClimbArea(bool canClimb){
+        if(!canClimb){
+            ChangeToIdleState();
+        }
+    }
+
+    private void ChangeToIdleState(){
+        previousState = this;
+        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Idle];
+        playerMachine.ChangeState(nextState);
+    }
 
 }

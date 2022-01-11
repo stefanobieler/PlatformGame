@@ -34,12 +34,6 @@ public class PlayerIdleState : BaseState
         playerMachine.PlayerNearClimbArea += OnPlayerNearClimbArea;
     }
 
-    private void PlayerJump(InputAction.CallbackContext obj)
-    {
-        previousState = this;
-        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Jump];
-        playerMachine.ChangeState(nextState);
-    }
 
     public override void Update()
     {
@@ -59,6 +53,29 @@ public class PlayerIdleState : BaseState
         }
     }
 
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        float currentYVelocity = playerRigidBody.velocity.y;
+        playerRigidBody.velocity = new Vector2(moveDir, currentYVelocity);
+    }
+
+    public override void Exit()
+    {
+        moveInput.Disable();
+        climbInput.Disable();
+        playerMachine.playerInput.Player.Jump.Disable();
+        playerMachine.playerInput.Player.Jump.performed -= PlayerJump;
+        playerMachine.PlayerNearClimbArea -= OnPlayerNearClimbArea;
+    }
+
+    private void PlayerJump(InputAction.CallbackContext obj)
+    {
+        previousState = this;
+        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Jump];
+        playerMachine.ChangeState(nextState);
+    }
+
     private void OnPlayerNearClimbArea(bool canClimb){
         this.canClimb = canClimb;
 
@@ -76,27 +93,10 @@ public class PlayerIdleState : BaseState
         nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Run];
         playerMachine.ChangeState(nextState);
     }
-
     private void ChangeToClimbState(){
         previousState = this;
         nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Climb];
         playerMachine.ChangeState(nextState);
-    }
-
-    public override void FixedUpdate()
-    {
-        base.FixedUpdate();
-        float currentYVelocity = playerRigidBody.velocity.y;
-        playerRigidBody.velocity = new Vector2(moveDir, currentYVelocity);
-    }
-
-    public override void Exit()
-    {
-        moveInput.Disable();
-        climbInput.Disable();
-        playerMachine.playerInput.Player.Jump.Disable();
-        playerMachine.playerInput.Player.Jump.performed -= PlayerJump;
-        playerMachine.PlayerNearClimbArea -= OnPlayerNearClimbArea;
     }
 
 }

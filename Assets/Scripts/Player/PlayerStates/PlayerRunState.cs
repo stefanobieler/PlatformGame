@@ -35,27 +35,6 @@ public class PlayerRunState : BaseState
         playerMachine.playerInput.Player.Jump.Enable();
         playerMachine.PlayerNearClimbArea += OnPlayerNearClimbArea;
     }
-
-    private void OnPlayerNearClimbArea(bool canClimb)
-    {
-        this.canClimb = canClimb;
-        if (canClimb)
-        {
-            climbInput.Enable();
-        }
-        else
-        {
-            climbInput.Disable();
-        }
-    }
-
-    private void PlayerJump(InputAction.CallbackContext obj)
-    {
-        previousState = this;
-        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Jump];
-        playerMachine.ChangeState(nextState);
-    }
-
     public override void Update()
     {
         base.Update();
@@ -81,20 +60,7 @@ public class PlayerRunState : BaseState
             playerMachine.transform.localScale = new Vector2(Mathf.Sign(moveDir), 1.0f);
         }
     }
-    private void ChangeToIdleState()
-    {
-        previousState = this;
-        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Idle];
-        playerMachine.ChangeState(nextState);
 
-    }
-
-    private void ChangeToClimbState()
-    {
-        previousState = this;
-        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Climb];
-        playerMachine.ChangeState(nextState);
-    }
 
 
     public override void FixedUpdate()
@@ -116,6 +82,40 @@ public class PlayerRunState : BaseState
         playerMachine.anim.SetBool("isRunning", false);
     }
 
+
+    private void OnPlayerNearClimbArea(bool canClimb)
+    {
+        this.canClimb = canClimb;
+        if (canClimb)
+        {
+            climbInput.Enable();
+        }
+        else
+        {
+            climbInput.Disable();
+        }
+    }
+
+    private void PlayerJump(InputAction.CallbackContext obj)
+    {
+        previousState = this;
+        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Jump];
+        playerMachine.ChangeState(nextState);
+    }
+    private void ChangeToIdleState()
+    {
+        previousState = this;
+        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Idle];
+        playerMachine.ChangeState(nextState);
+
+    }
+
+    private void ChangeToClimbState()
+    {
+        previousState = this;
+        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Climb];
+        playerMachine.ChangeState(nextState);
+    }
 
 
 }

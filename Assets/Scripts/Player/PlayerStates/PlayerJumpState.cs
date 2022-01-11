@@ -26,12 +26,6 @@ public class PlayerJumpState : BaseState
         moveInput.Enable();
     }
 
-    private void OnLandOnGround(){
-        previousState = this;
-        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Idle];
-        playerMachine.ChangeState(nextState);
-    }
-
     public override void Update()
     {
         base.Update();
@@ -55,6 +49,12 @@ public class PlayerJumpState : BaseState
         base.Exit();
         playerMachine.PlayerLandOnGround -= OnLandOnGround;
         moveInput.Disable();
+    }
+
+    private void OnLandOnGround(){
+        previousState = this;
+        nextState = playerMachine.states[(int)PlayerStateMachine.PlayerState.Idle];
+        playerMachine.ChangeState(nextState);
     }
 
 }
