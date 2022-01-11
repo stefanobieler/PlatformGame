@@ -2,17 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseStateMachine : MonoBehaviour
+public abstract class BaseStateMachine : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    protected BaseState currentState;
+    public Dictionary<int, BaseState> states { get; protected set; }
+
     void Start()
     {
-        
+        currentState = GetInitialState();
+        currentState?.Start();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        currentState?.Update();
     }
+
+    void FixedUpdate()
+    {
+        currentState?.FixedUpdate();
+    }
+
+    void LateUpdate()
+    {
+        currentState?.LateUpdate();
+    }
+
+    public void ChangeState(BaseState newState)
+    {
+        currentState?.Exit();
+
+        currentState = newState;
+        currentState?.Start();
+    }
+
+    protected virtual BaseState GetInitialState()
+    {
+        return null;
+    }
+
 }

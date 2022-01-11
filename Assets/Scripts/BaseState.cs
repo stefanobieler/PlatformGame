@@ -5,30 +5,38 @@ using UnityEngine;
 public abstract class BaseState
 {
     protected BaseStateMachine stateMachine;
+    protected BaseState previousState;
+    protected BaseState nextState;
     protected string stateName = "Unkown";
 
-    public BaseState(BaseStateMachine stateMachine){
+    public BaseState(BaseStateMachine stateMachine)
+    {
         this.stateMachine = stateMachine;
     }
 
-    public BaseState(BaseStateMachine stateMachine, string stateName){
-        this.stateName = stateName;
-        this.stateMachine = stateMachine;
-    }
 
-    public virtual void Start(){
+    public virtual void Start()
+    {
 
     }
 
-    public virtual void Update(){
+    public virtual void Update()
+    {
 
     }
 
-    public virtual void LateUpdate(){
+    public virtual void FixedUpdate()
+    {
 
     }
 
-    public virtual void Exit(){
+    public virtual void LateUpdate()
+    {
+
+    }
+
+    public virtual void Exit()
+    {
 
     }
 }
